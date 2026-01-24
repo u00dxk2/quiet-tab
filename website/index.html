@@ -272,6 +272,21 @@
       height: 20px;
     }
 
+    .cta-button.cta-coming-soon {
+      background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+      box-shadow: 0 4px 14px rgba(100, 116, 139, 0.4);
+      cursor: default;
+    }
+
+    .cta-button.cta-coming-soon:hover {
+      transform: none;
+      box-shadow: 0 4px 14px rgba(100, 116, 139, 0.4);
+    }
+
+    .cta-button.cta-coming-soon::before {
+      display: none;
+    }
+
     .price-note {
       margin-top: 20px;
       color: var(--text-light);
@@ -864,13 +879,14 @@
       <div class="container">
         <h1 class="fade-in">Silence the noise.<br>Keep your focus.</h1>
         <p class="tagline fade-in delay-1">A tiny Chrome extension that hides the distracting unread count from your Gmail tab.</p>
-        <a href="#install" class="cta-button fade-in delay-2">
+        <a href="#install" class="cta-button cta-coming-soon fade-in delay-2">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
           </svg>
-          Install for Chrome
+          Coming Soon to Chrome
         </a>
-        <p class="price-note fade-in delay-3">Free &amp; open source</p>
+        <p class="price-note fade-in delay-3">Free &amp; open source — pending Chrome Web Store approval</p>
       </div>
     </section>
 

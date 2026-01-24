@@ -19,3 +19,6 @@ dist/
 # Local development
 .env
 .env.local
+
+# Store assets (for generating screenshots locally)
+store-assets/
