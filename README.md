@@ -61,7 +61,7 @@ Quiet Tab:
 
 ## Support
 
-Having issues? [Open an issue](https://github.com/skylarkcreations/quiet-tab/issues) on GitHub.
+Having issues? [Open an issue](https://github.com/u00dxk2/quiet-tab/issues) on GitHub.
 
 ## License
 
