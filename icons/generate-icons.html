@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate Quiet Tab Icons</title>
+  <style>
+    body { font-family: -apple-system, sans-serif; padding: 40px; background: #f5f5f5; }
+    h1 { margin-bottom: 8px; }
+    p { color: #666; margin-bottom: 24px; }
+    .designs { display: flex; flex-wrap: wrap; gap: 40px; }
+    .design { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .design h2 { font-size: 1rem; margin-bottom: 16px; color: #333; }
+    .icons { display: flex; gap: 16px; align-items: end; margin: 16px 0; }
+    .icon-container { text-align: center; }
+    .icon-container span { display: block; font-size: 12px; color: #999; margin-top: 4px; }
+    canvas { border: 1px solid #ddd; border-radius: 4px; background: white; }
+    a { display: inline-block; margin-top: 8px; color: #4A90A4; text-decoration: none; font-size: 13px; }
+    a:hover { text-decoration: underline; }
+    .preview-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding: 12px; background: #f8f8f8; border-radius: 8px; }
+    .preview-row img { width: 16px; height: 16px; }
+    .preview-row span { font-size: 13px; color: #333; }
+  </style>
+</head>
+<body>
+  <h1>Quiet Tab Icon Generator</h1>
+  <p>Click "Download" links to save the PNG icons. Design B is recommended.</p>
+  
+  <div class="designs">
+    <!-- Design A: Number with strike -->
+    <div class="design">
+      <h2>Design A: Notification Badge Cancelled</h2>
+      <div class="icons">
+        <div class="icon-container">
+          <canvas id="a16" width="16" height="16"></canvas>
+          <span>16px</span>
+          <a id="linka16" download="icon16.png">Download</a>
+        </div>
+        <div class="icon-container">
+          <canvas id="a48" width="48" height="48"></canvas>
+          <span>48px</span>
+          <a id="linka48" download="icon48.png">Download</a>
+        </div>
+        <div class="icon-container">
+          <canvas id="a128" width="128" height="128"></canvas>
+          <span>128px</span>
+          <a id="linka128" download="icon128.png">Download</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Design B: Clean badge with X -->
+    <div class="design">
+      <h2>Design B: Clean Badge with X (Recommended)</h2>
+      <div class="icons">
+        <div class="icon-container">
+          <canvas id="b16" width="16" height="16"></canvas>
+          <span>16px</span>
+          <a id="linkb16" download="icon16.png">Download</a>
+        </div>
+        <div class="icon-container">
+          <canvas id="b48" width="48" height="48"></canvas>
+          <span>48px</span>
+          <a id="linkb48" download="icon48.png">Download</a>
+        </div>
+        <div class="icon-container">
+          <canvas id="b128" width="128" height="128"></canvas>
+          <span>128px</span>
+          <a id="linkb128" download="icon128.png">Download</a>
+        </div>
+      </div>
+      <div class="preview-row">
+        <canvas id="bPreview" width="16" height="16" style="border: none;"></canvas>
+        <span>Inbox - david@gmail.com</span>
+      </div>
+    </div>
+
+    <!-- Design C: Minimalist circle slash -->
+    <div class="design">
+      <h2>Design C: Circle with Slash</h2>
+      <div class="icons">
+        <div class="icon-container">
+          <canvas id="c16" width="16" height="16"></canvas>
+          <span>16px</span>
+          <a id="linkc16" download="icon16.png">Download</a>
+        </div>
+        <div class="icon-container">
+          <canvas id="c48" width="48" height="48"></canvas>
+          <span>48px</span>
+          <a id="linkc48" download="icon48.png">Download</a>
+        </div>
+        <div class="icon-container">
+          <canvas id="c128" width="128" height="128"></canvas>
+          <span>128px</span>
+          <a id="linkc128" download="icon128.png">Download</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Design D: Gmail-style envelope with cancelled count -->
+    <div class="design">
+      <h2>Design D: Envelope with Cancelled Badge</h2>
+      <div class="icons">
+        <div class="icon-container">
+          <canvas id="d16" width="16" height="16"></canvas>
+          <span>16px</span>
+          <a id="linkd16" download="icon16.png">Download</a>
+        </div>
+        <div class="icon-container">
+          <canvas id="d48" width="48" height="48"></canvas>
+          <span>48px</span>
+          <a id="linkd48" download="icon48.png">Download</a>
+        </div>
+        <div class="icon-container">
+          <canvas id="d128" width="128" height="128"></canvas>
+          <span>128px</span>
+          <a id="linkd128" download="icon128.png">Download</a>
+        </div>
+      </div>
+      <div class="preview-row">
+        <canvas id="dPreview" width="16" height="16" style="border: none;"></canvas>
+        <span>Inbox - david@gmail.com</span>
+      </div>
+    </div>
+
+    <!-- Design E: Simple (1) crossed out -->
+    <div class="design">
+      <h2>Design E: Crossed Out Count (Simplest)</h2>
+      <div class="icons">
+        <div class="icon-container">
+          <canvas id="e16" width="16" height="16"></canvas>
+          <span>16px</span>
+          <a id="linke16" download="icon16.png">Download</a>
+        </div>
+        <div class="icon-container">
+          <canvas id="e48" width="48" height="48"></canvas>
+          <span>48px</span>
+          <a id="linke48" download="icon48.png">Download</a>
+        </div>
+        <div class="icon-container">
+          <canvas id="e128" width="128" height="128"></canvas>
+          <span>128px</span>
+          <a id="linke128" download="icon128.png">Download</a>
+        </div>
+      </div>
+      <div class="preview-row">
+        <canvas id="ePreview" width="16" height="16" style="border: none;"></canvas>
+        <span>Inbox - david@gmail.com</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Design A: Red notification badge with diagonal strike
+    function drawDesignA(ctx, size) {
+      const s = size / 128;
+      
+      // Red notification badge background
+      ctx.fillStyle = '#EA4335';
+      roundRect(ctx, 14*s, 14*s, 100*s, 100*s, 20*s);
+      ctx.fill();
+      
+      // White number "1"
+      ctx.fillStyle = 'white';
+      ctx.font = `bold ${56*s}px -apple-system, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('1', 64*s, 68*s);
+      
+      // Diagonal strike-through
+      ctx.strokeStyle = '#2D3748';
+      ctx.lineWidth = 10*s;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(20*s, 108*s);
+      ctx.lineTo(108*s, 20*s);
+      ctx.stroke();
+      
+      // White outline on strike for visibility
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 4*s;
+      ctx.beginPath();
+      ctx.moveTo(20*s, 108*s);
+      ctx.lineTo(108*s, 20*s);
+      ctx.stroke();
+    }
+
+    // Design B: Clean teal badge with subtle X - more refined
+    function drawDesignB(ctx, size) {
+      const s = size / 128;
+      
+      // Teal/primary color rounded square
+      ctx.fillStyle = '#4A90A4';
+      roundRect(ctx, 8*s, 8*s, 112*s, 112*s, 24*s);
+      ctx.fill();
+      
+      // Parentheses and number in white
+      ctx.fillStyle = 'white';
+      ctx.font = `600 ${44*s}px -apple-system, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('(1)', 64*s, 60*s);
+      
+      // Red X below/overlapping
+      ctx.strokeStyle = '#E53E3E';
+      ctx.lineWidth = 10*s;
+      ctx.lineCap = 'round';
+      
+      // X mark
+      ctx.beginPath();
+      ctx.moveTo(40*s, 75*s);
+      ctx.lineTo(88*s, 108*s);
+      ctx.stroke();
+      
+      ctx.beginPath();
+      ctx.moveTo(88*s, 75*s);
+      ctx.lineTo(40*s, 108*s);
+      ctx.stroke();
+    }
+
+    // Design C: Minimalist - number in circle with prohibition slash
+    function drawDesignC(ctx, size) {
+      const s = size / 128;
+      
+      // Outer circle - teal
+      ctx.strokeStyle = '#4A90A4';
+      ctx.lineWidth = 8*s;
+      ctx.beginPath();
+      ctx.arc(64*s, 64*s, 54*s, 0, Math.PI * 2);
+      ctx.stroke();
+      
+      // Number "1" in center
+      ctx.fillStyle = '#4A90A4';
+      ctx.font = `bold ${48*s}px -apple-system, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('1', 64*s, 66*s);
+      
+      // Prohibition slash - red
+      ctx.strokeStyle = '#E53E3E';
+      ctx.lineWidth = 8*s;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(24*s, 104*s);
+      ctx.lineTo(104*s, 24*s);
+      ctx.stroke();
+    }
+
+    // Utility: rounded rectangle
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    // Design D: Envelope icon with cancelled notification badge
+    function drawDesignD(ctx, size) {
+      const s = size / 128;
+      
+      // White background circle
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.arc(64*s, 64*s, 60*s, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Envelope body - warm red/coral like Gmail
+      ctx.fillStyle = '#DB4437';
+      roundRect(ctx, 20*s, 35*s, 88*s, 65*s, 6*s);
+      ctx.fill();
+      
+      // Envelope flap (triangle pointing down)
+      ctx.fillStyle = '#C53929';
+      ctx.beginPath();
+      ctx.moveTo(20*s, 35*s);
+      ctx.lineTo(64*s, 70*s);
+      ctx.lineTo(108*s, 35*s);
+      ctx.closePath();
+      ctx.fill();
+      
+      // White inner flap highlight
+      ctx.fillStyle = '#EA4335';
+      ctx.beginPath();
+      ctx.moveTo(24*s, 38*s);
+      ctx.lineTo(64*s, 66*s);
+      ctx.lineTo(104*s, 38*s);
+      ctx.lineTo(64*s, 58*s);
+      ctx.closePath();
+      ctx.fill();
+      
+      // Notification badge with X
+      ctx.fillStyle = '#4A90A4';
+      ctx.beginPath();
+      ctx.arc(96*s, 32*s, 24*s, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // X on badge
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 5*s;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(86*s, 22*s);
+      ctx.lineTo(106*s, 42*s);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(106*s, 22*s);
+      ctx.lineTo(86*s, 42*s);
+      ctx.stroke();
+    }
+
+    // Design E: Simple text "(1)" with diagonal strike - most literal
+    function drawDesignE(ctx, size) {
+      const s = size / 128;
+      
+      // Soft blue/teal background
+      ctx.fillStyle = '#4A90A4';
+      ctx.beginPath();
+      ctx.arc(64*s, 64*s, 60*s, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // "(1)" text in white
+      ctx.fillStyle = 'white';
+      ctx.font = `bold ${52*s}px -apple-system, system-ui, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('(1)', 64*s, 62*s);
+      
+      // Red diagonal strike through
+      ctx.strokeStyle = '#E53E3E';
+      ctx.lineWidth = 10*s;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(28*s, 100*s);
+      ctx.lineTo(100*s, 28*s);
+      ctx.stroke();
+      
+      // White edge on strike for contrast
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 3*s;
+      ctx.beginPath();
+      ctx.moveTo(28*s, 100*s);
+      ctx.lineTo(100*s, 28*s);
+      ctx.stroke();
+    }
+
+    // Generate all designs
+    const designs = [
+      { prefix: 'a', draw: drawDesignA },
+      { prefix: 'b', draw: drawDesignB },
+      { prefix: 'c', draw: drawDesignC },
+      { prefix: 'd', draw: drawDesignD },
+      { prefix: 'e', draw: drawDesignE }
+    ];
+
+    designs.forEach(({ prefix, draw }) => {
+      [16, 48, 128].forEach(size => {
+        const canvas = document.getElementById(prefix + size);
+        if (canvas) {
+          const ctx = canvas.getContext('2d');
+          draw(ctx, size);
+          
+          const link = document.getElementById('link' + prefix + size);
+          if (link) {
+            link.href = canvas.toDataURL('image/png');
+          }
+        }
+      });
+    });
+
+    // Previews
+    const previews = [
+      { id: 'bPreview', draw: drawDesignB },
+      { id: 'dPreview', draw: drawDesignD },
+      { id: 'ePreview', draw: drawDesignE }
+    ];
+    
+    previews.forEach(({ id, draw }) => {
+      const canvas = document.getElementById(id);
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        draw(ctx, 16);
+      }
+    });
+  </script>
+</body>
+</html>

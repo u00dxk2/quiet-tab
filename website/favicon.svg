@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Design E: (1) with strike-through -->
+  <circle cx="64" cy="64" r="60" fill="#4A90A4"/>
+  <text x="64" y="70" text-anchor="middle" fill="white" font-family="-apple-system, system-ui, sans-serif" font-size="52" font-weight="bold">(1)</text>
+  <line x1="28" y1="100" x2="100" y2="28" stroke="#E53E3E" stroke-width="10" stroke-linecap="round"/>
+  <line x1="28" y1="100" x2="100" y2="28" stroke="white" stroke-width="3" stroke-linecap="round"/>
+</svg>

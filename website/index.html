@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiet Tab - Hide Gmail Notification Count | Focus Without Distraction</title>
+  <meta name="description" content="A free Chrome extension that removes the distracting unread email count from your Gmail browser tab. Keep Gmail open without the constant tug at your attention.">
+  <meta name="keywords" content="Gmail, Chrome extension, productivity, focus, unread count, notification, distraction free">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Quiet Tab - Hide Gmail Notification Count">
+  <meta property="og:description" content="Remove the distracting (4) unread count from your Gmail tab. Check email on your terms.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://quiet-tab.com">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #4A90A4;
+      --primary-dark: #3A7A8E;
+      --primary-light: #5BA3B7;
+      --text: #1a202c;
+      --text-light: #64748b;
+      --bg: #f8fafc;
+      --white: #FFFFFF;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    .fade-in {
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    .delay-1 { animation-delay: 0.1s; opacity: 0; }
+    .delay-2 { animation-delay: 0.2s; opacity: 0; }
+    .delay-3 { animation-delay: 0.3s; opacity: 0; }
+    .delay-4 { animation-delay: 0.4s; opacity: 0; }
+
+    /* Header */
+    header {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: box-shadow 0.3s ease;
+    }
+
+    header:hover {
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+      transition: transform 0.2s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.02);
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      filter: drop-shadow(0 2px 4px rgba(74, 144, 164, 0.3));
+      transition: filter 0.2s ease;
+    }
+
+    .logo:hover .logo-icon {
+      filter: drop-shadow(0 4px 8px rgba(74, 144, 164, 0.4));
+    }
+
+    .logo-text {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-link {
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+      background: rgba(74, 144, 164, 0.08);
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 100px 0 80px;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse at center, rgba(74, 144, 164, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero h1 {
+      font-size: 3.25rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: var(--text);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .hero .tagline {
+      font-size: 1.25rem;
+      color: var(--text-light);
+      margin-bottom: 44px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: var(--white);
+      padding: 18px 36px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 14px rgba(74, 144, 164, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(74, 144, 164, 0.5);
+    }
+
+    .cta-button:hover::before {
+      left: 100%;
+    }
+
+    .cta-button:active {
+      transform: translateY(0);
+    }
+
+    .cta-button svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .price-note {
+      margin-top: 20px;
+      color: var(--text-light);
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .price-note::before {
+      content: '✨ ';
+    }
+
+    /* Demo */
+    .demo {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px;
+      margin: 0 24px 60px;
+      max-width: 852px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    .demo::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 20px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(74, 144, 164, 0.2), transparent, rgba(16, 185, 129, 0.2));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .demo h2 {
+      text-align: center;
+      margin-bottom: 36px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .demo-comparison {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .demo-item {
+      position: relative;
+    }
+
+    .demo-label {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      margin-bottom: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Browser Chrome Mockup */
+    .browser-mockup {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      border: 1px solid #d1d5db;
+      transition: all 0.3s ease;
+    }
+
+    .demo-item:hover .browser-mockup {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    .browser-toolbar {
+      background: linear-gradient(to bottom, #f3f4f6, #e5e7eb);
+      padding: 10px 14px 0;
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      border-bottom: 1px solid #d1d5db;
+    }
+
+    .browser-tab-chrome {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: #e5e7eb;
+      border-radius: 10px 10px 0 0;
+      font-size: 13px;
+      color: #374151;
+      max-width: 220px;
+      position: relative;
+      border: 1px solid #d1d5db;
+      border-bottom: none;
+      margin-bottom: -1px;
+      font-weight: 500;
+    }
+
+    .browser-tab-chrome.active {
+      background: white;
+      border-color: #d1d5db;
+    }
+
+    .browser-tab-chrome .favicon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .browser-tab-chrome .tab-title {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .browser-tab-chrome .tab-title .count {
+      color: #1f2937;
+      font-weight: 600;
+    }
+
+    .browser-tab-chrome .tab-close {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #9ca3af;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+    }
+
+    .browser-tab-chrome:hover .tab-close {
+      background: rgba(0,0,0,0.08);
+      color: #6b7280;
+    }
+
+    .inactive-tab {
+      background: #d1d5db;
+      border-color: transparent;
+    }
+
+    .inactive-tab .tab-title {
+      color: #6b7280;
+    }
+
+    .browser-content {
+      background: white;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9ca3af;
+      font-size: 13px;
+      font-style: italic;
+    }
+
+    /* Before/After badges */
+    .demo-item.before .browser-mockup {
+      opacity: 0.9;
+    }
+
+    .demo-item.after .browser-mockup {
+      box-shadow: var(--shadow-md), 0 0 0 3px var(--success-light), 0 0 0 4px var(--success);
+    }
+
+    .demo-item.after:hover .browser-mockup {
+      box-shadow: var(--shadow-lg), 0 0 0 3px var(--success-light), 0 0 0 4px var(--success);
+    }
+
+    .demo-item.after .demo-label {
+      color: var(--success);
+    }
+
+    .checkmark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      background: var(--success);
+      color: white;
+      border-radius: 50%;
+      font-size: 11px;
+      margin-left: 8px;
+      vertical-align: middle;
+      box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Features */
+    .features {
+      padding: 80px 0;
+    }
+
+    .features h2 {
+      text-align: center;
+      margin-bottom: 56px;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .feature {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      text-align: left;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .feature:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+      border-color: transparent;
+    }
+
+    .feature:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 12px rgba(74, 144, 164, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .feature:hover .feature-icon {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(74, 144, 164, 0.4);
+    }
+
+    .feature h3 {
+      margin-bottom: 10px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .feature p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* How it works */
+    .how-it-works {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 0;
+    }
+
+    .how-it-works h2 {
+      text-align: center;
+      margin-bottom: 56px;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 24px;
+      background: var(--bg);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .step:hover {
+      background: white;
+      box-shadow: var(--shadow-md);
+      transform: translateX(4px);
+    }
+
+    .step-number {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(74, 144, 164, 0.3);
+    }
+
+    .step-content h3 {
+      font-size: 1.05rem;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .step-content p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* Trust */
+    .trust {
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .trust h2 {
+      margin-bottom: 36px;
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .trust-points {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .trust-point {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-light);
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 12px 20px;
+      background: var(--white);
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+
+    .trust-point:hover {
+      border-color: var(--success);
+      box-shadow: var(--shadow);
+    }
+
+    .trust-point svg {
+      color: var(--success);
+      width: 20px;
+      height: 20px;
+    }
+
+    .made-by {
+      margin-top: 48px;
+      padding-top: 48px;
+      border-top: 1px solid var(--border);
+    }
+
+    .made-by p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+
+    .made-by a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .made-by a:hover {
+      color: var(--primary-dark);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 36px 0;
+      text-align: center;
+    }
+
+    footer p {
+      color: var(--text-light);
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    footer a:hover {
+      color: var(--primary);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .hero {
+        padding: 60px 0 40px;
+      }
+
+      .hero h1 {
+        font-size: 2.25rem;
+      }
+
+      .hero .tagline {
+        font-size: 1.1rem;
+        padding: 0 16px;
+      }
+
+      .cta-button {
+        padding: 16px 28px;
+        font-size: 1rem;
+      }
+
+      .demo {
+        padding: 28px 20px;
+        margin: 0 16px 40px;
+        border-radius: 16px;
+      }
+
+      .demo h2 {
+        font-size: 1.25rem;
+      }
+
+      .browser-tab-chrome {
+        padding: 8px 10px;
+        font-size: 12px;
+        max-width: 160px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 0 16px;
+      }
+
+      .feature {
+        padding: 24px;
+      }
+
+      .features h2,
+      .how-it-works h2,
+      .trust h2 {
+        font-size: 1.5rem;
+        padding: 0 16px;
+      }
+
+      .steps {
+        padding: 0 16px;
+      }
+
+      .step {
+        padding: 20px;
+      }
+
+      .trust-points {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 0 16px;
+      }
+
+      .trust-point {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-content {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .hero h1 {
+        font-size: 1.85rem;
+      }
+
+      .browser-toolbar {
+        padding: 8px 8px 0;
+      }
+
+      .inactive-tab {
+        display: none;
+      }
+
+      .browser-tab-chrome {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <a href="/" class="logo">
+          <svg class="logo-icon" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="64" cy="64" r="60" fill="#4A90A4"/>
+            <text x="64" y="70" text-anchor="middle" fill="white" font-family="-apple-system, system-ui, sans-serif" font-size="52" font-weight="bold">(1)</text>
+            <line x1="28" y1="100" x2="100" y2="28" stroke="#E53E3E" stroke-width="10" stroke-linecap="round"/>
+            <line x1="28" y1="100" x2="100" y2="28" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          <span class="logo-text">Quiet Tab</span>
+        </a>
+        <a href="https://skylarkcreations.com" class="nav-link" target="_blank">By Skylark Creations</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1 class="fade-in">Silence the noise.<br>Keep your focus.</h1>
+        <p class="tagline fade-in delay-1">A tiny Chrome extension that hides the distracting unread count from your Gmail tab.</p>
+        <a href="#install" class="cta-button fade-in delay-2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+          </svg>
+          Install for Chrome
+        </a>
+        <p class="price-note fade-in delay-3">Free &amp; open source</p>
+      </div>
+    </section>
+
+    <section class="demo fade-in delay-4">
+      <h2>What it does</h2>
+      <div class="demo-comparison">
+        <div class="demo-item before">
+          <div class="demo-label">Before</div>
+          <div class="browser-mockup">
+            <div class="browser-toolbar">
+              <div class="browser-tab-chrome active">
+                <svg class="favicon" viewBox="0 0 24 24">
+                  <path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 010 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/>
+                </svg>
+                <span class="tab-title">Inbox <span class="count">(4)</span> - david@gm...</span>
+                <span class="tab-close">×</span>
+              </div>
+              <div class="browser-tab-chrome inactive-tab">
+                <span class="tab-title">New Tab</span>
+                <span class="tab-close">×</span>
+              </div>
+            </div>
+            <div class="browser-content">
+              That (4) constantly tugging at your attention...
+            </div>
+          </div>
+        </div>
+        
+        <div class="demo-item after">
+          <div class="demo-label">After <span class="checkmark">✓</span></div>
+          <div class="browser-mockup">
+            <div class="browser-toolbar">
+              <div class="browser-tab-chrome active">
+                <svg class="favicon" viewBox="0 0 24 24">
+                  <path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 010 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/>
+                </svg>
+                <span class="tab-title">Inbox - david@gmail.com</span>
+                <span class="tab-close">×</span>
+              </div>
+              <div class="browser-tab-chrome inactive-tab">
+                <span class="tab-title">New Tab</span>
+                <span class="tab-close">×</span>
+              </div>
+            </div>
+            <div class="browser-content">
+              Peace of mind. Check email when you're ready.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="container">
+        <h2>Why Quiet Tab?</h2>
+        <div class="feature-grid">
+          <div class="feature">
+            <div class="feature-icon">🎯</div>
+            <h3>Stay Focused</h3>
+            <p>Stop that number from constantly pulling your attention away from what matters.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">⚡</div>
+            <h3>Lightweight</h3>
+            <p>Just 30 lines of code. No bloat, no tracking, no performance impact.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">🔒</div>
+            <h3>Private</h3>
+            <p>Zero permissions required. Runs only on Gmail. Doesn't read your emails.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">💚</div>
+            <h3>Free Forever</h3>
+            <p>No subscription, no premium tier, no catch. Just a useful tool.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-it-works" id="install">
+      <div class="container">
+        <h2>Install in 30 seconds</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h3>Add to Chrome</h3>
+              <p>Click the button above or visit the Chrome Web Store and click "Add to Chrome"</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h3>That's it</h3>
+              <p>Seriously. Open Gmail and the unread count is gone. No setup needed.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h3>Check email on your terms</h3>
+              <p>Your emails are still there when you're ready for them.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust">
+      <div class="container">
+        <h2>Built for peace of mind</h2>
+        <div class="trust-points">
+          <div class="trust-point">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <span>Open source code</span>
+          </div>
+          <div class="trust-point">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <span>No data collection</span>
+          </div>
+          <div class="trust-point">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <span>No account required</span>
+          </div>
+        </div>
+
+        <div class="made-by">
+          <p>Made with care by <a href="https://skylarkcreations.com" target="_blank">Skylark Creations</a> in Colorado</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>
+        © 2026 Skylark Creations LLC &nbsp;·&nbsp; 
+        <a href="privacy.html">Privacy</a> &nbsp;·&nbsp;
+        <a href="https://github.com/skylarkcreations/quiet-tab" target="_blank">GitHub</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
