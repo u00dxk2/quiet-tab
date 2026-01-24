@@ -82,6 +82,34 @@
       50% { opacity: 0.7; }
     }
 
+    @keyframes annoyingPulse {
+      0%, 100% { 
+        transform: scale(1);
+        color: #dc2626;
+      }
+      50% { 
+        transform: scale(1.15);
+        color: #ef4444;
+      }
+    }
+
+    @keyframes gentleGlow {
+      0%, 100% { 
+        box-shadow: var(--shadow-md), 0 0 0 3px var(--success-light), 0 0 0 4px var(--success), 0 0 20px rgba(16, 185, 129, 0.2);
+      }
+      50% { 
+        box-shadow: var(--shadow-md), 0 0 0 3px var(--success-light), 0 0 0 4px var(--success), 0 0 30px rgba(16, 185, 129, 0.4);
+      }
+    }
+
+    @keyframes subtleShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-1px); }
+      40% { transform: translateX(1px); }
+      60% { transform: translateX(-1px); }
+      80% { transform: translateX(1px); }
+    }
+
     .fade-in {
       animation: fadeInUp 0.6s ease-out forwards;
     }
@@ -371,8 +399,10 @@
     }
 
     .browser-tab-chrome .tab-title .count {
-      color: #1f2937;
-      font-weight: 600;
+      color: #dc2626;
+      font-weight: 700;
+      animation: annoyingPulse 1.5s ease-in-out infinite;
+      display: inline-block;
     }
 
     .browser-tab-chrome .tab-close {
@@ -404,26 +434,47 @@
 
     .browser-content {
       background: white;
-      height: 56px;
+      height: 72px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #9ca3af;
-      font-size: 13px;
-      font-style: italic;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 0 16px;
+      text-align: center;
+    }
+
+    .demo-item.before .browser-content {
+      color: #6b7280;
+      background: linear-gradient(to bottom, #fff, #fef2f2);
+    }
+
+    .demo-item.before .browser-content .highlight {
+      color: #dc2626;
+      font-weight: 700;
+      animation: annoyingPulse 1.5s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    .demo-item.after .browser-content {
+      color: #059669;
+      font-weight: 600;
+      background: linear-gradient(to bottom, #fff, #ecfdf5);
+      font-size: 16px;
     }
 
     /* Before/After badges */
     .demo-item.before .browser-mockup {
-      opacity: 0.9;
+      animation: subtleShake 3s ease-in-out infinite;
+      border-color: #fca5a5;
     }
 
     .demo-item.after .browser-mockup {
-      box-shadow: var(--shadow-md), 0 0 0 3px var(--success-light), 0 0 0 4px var(--success);
+      animation: gentleGlow 3s ease-in-out infinite;
     }
 
     .demo-item.after:hover .browser-mockup {
-      box-shadow: var(--shadow-lg), 0 0 0 3px var(--success-light), 0 0 0 4px var(--success);
+      box-shadow: var(--shadow-lg), 0 0 0 3px var(--success-light), 0 0 0 4px var(--success), 0 0 30px rgba(16, 185, 129, 0.3);
     }
 
     .demo-item.after .demo-label {
@@ -843,7 +894,7 @@
               </div>
             </div>
             <div class="browser-content">
-              That (4) constantly tugging at your attention...
+              That <span class="highlight">(4)</span> constantly tugging at your attention...
             </div>
           </div>
         </div>
@@ -865,7 +916,7 @@
               </div>
             </div>
             <div class="browser-content">
-              Peace of mind. Check email when you're ready.
+              Ahh... peace. Check email when <em>you're</em> ready.
             </div>
           </div>
         </div>
