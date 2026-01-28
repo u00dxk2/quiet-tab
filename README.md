@@ -5,7 +5,7 @@
 A lightweight Chrome extension that hides the distracting unread email count from your Gmail browser tab.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Chrome Web Store](https://img.shields.io/badge/Chrome-Coming%20Soon-yellow)](https://quiet-tab.com)
+[![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-Install-4285F4?logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/quiet-tab/cbojfnomlkigdeplgklepibeahekkgmm)
 [![Website](https://img.shields.io/badge/Website-quiet--tab.com-4A90A4)](https://quiet-tab.com)
 
 ---
@@ -36,9 +36,9 @@ Quiet Tab removes the unread count from the tab title. Your emails are still the
 
 ## Installation
 
-### From Chrome Web Store (Coming Soon)
+### From Chrome Web Store
 
-1. Visit the [Quiet Tab page on Chrome Web Store](https://quiet-tab.com) *(pending approval)*
+1. Visit [Quiet Tab on Chrome Web Store](https://chromewebstore.google.com/detail/quiet-tab/cbojfnomlkigdeplgklepibeahekkgmm)
 2. Click "Add to Chrome"
 3. Done!
 
