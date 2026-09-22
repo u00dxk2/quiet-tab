@@ -2,12 +2,24 @@
 // Silence the noise. Keep your focus.
 // Removes the unread count (e.g., "(4)") from Gmail tab titles
 
+// Matches a parenthesised unread count in any locale Gmail writes it in.
+//   \p{Nd}      any decimal digit, so Arabic-Indic (١٢٣) and Devanagari (१२३) count too
+//   [.,...]     the digit-grouping separators locales actually use:
+//               comma (en-US "1,234"), period (de-DE "1.234"),
+//               no-break / narrow no-break / thin / figure space (fr-FR, ru-RU "1 234"),
+//               apostrophe and right single quote (de-CH "1'234"),
+//               U+066C Arabic thousands separator.
+// A separator only counts BETWEEN digits, so "(1,)", "(,234)" and "()" are left alone.
+const UNREAD_COUNT = /\s*\(\p{Nd}+(?:[.,    ’'٬]\p{Nd}+)*\)\s*/gu;
+
 function cleanTitle() {
   const title = document.title;
+  if (typeof title !== 'string' || title === '') return;
+
   // Remove any "(number)" pattern from the title
-  // Matches: "Inbox (1,234)", "Gmail - Primary (5)", etc.
-  const cleanedTitle = title.replace(/\s*\(\d[\d,]*\)\s*/g, ' ').replace(/\s+/g, ' ').trim();
-  
+  // Matches: "Inbox (1,234)", "Gmail - Primary (5)", "Posteingang (1.234)", etc.
+  const cleanedTitle = title.replace(UNREAD_COUNT, ' ').replace(/\s+/g, ' ').trim();
+
   if (cleanedTitle !== title) {
     document.title = cleanedTitle;
   }

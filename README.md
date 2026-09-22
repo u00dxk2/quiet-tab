@@ -66,7 +66,9 @@ Quiet Tab removes the unread count from the tab title. Your emails are still the
 The extension uses a simple content script that:
 
 1. Watches for changes to the page title using a `MutationObserver`
-2. Removes any `(number)` pattern using a regex: `/\s*\(\d+\)\s*/g`
+2. Removes any `(number)` pattern using a regex — including counts over 999, which
+   Gmail writes with a locale separator (`Inbox (1,234)`, `Posteingang (1.234)`,
+   `Boîte de réception (1 234)`)
 3. Updates the title to the cleaned version
 
 That's it. No magic, no complexity. You can read the entire source in [`content.js`](content.js).
