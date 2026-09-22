@@ -5,8 +5,8 @@
 function cleanTitle() {
   const title = document.title;
   // Remove any "(number)" pattern from the title
-  // Matches: "Inbox (123)", "Gmail - Primary (5)", etc.
-  const cleanedTitle = title.replace(/\s*\(\d+\)\s*/g, ' ').replace(/\s+/g, ' ').trim();
+  // Matches: "Inbox (1,234)", "Gmail - Primary (5)", etc.
+  const cleanedTitle = title.replace(/\s*\(\d[\d,]*\)\s*/g, ' ').replace(/\s+/g, ' ').trim();
   
   if (cleanedTitle !== title) {
     document.title = cleanedTitle;
